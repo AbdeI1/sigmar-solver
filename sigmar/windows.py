@@ -163,9 +163,10 @@ def click_in_window(client_x, client_y):
     set_window_foreground(handle)
     rect = get_window_rectangle(handle)
 
-    x = client_x + rect.left + 100
-    y = client_y + rect.top  - 10 
-
+    x = client_x + rect.left + 100  # These two number control where on the screen the mouse will click for a tile. If you detect that the mouse isn't clicking in the right
+    y = client_y + rect.top  - 10   # spot, feel free to add/subtract more to these numbers.
+                                    # for x: adding will make the mouse move to the right, wheras subtracting will make the mouse move to the left more.
+                                    # for y: adding will make the mouse move down more, whereas subtracting will make the mouse move up more.
     pyautogui.mouseDown(button="left", x=x, y=y)
     time.sleep(0.1)
     pyautogui.mouseUp(button="left", x=x, y=y)
