@@ -41,7 +41,7 @@ def capture_tile_images():
                                                                                         # the first two arguments are the top-right corener, 
                                                                                         # the next two are the bottom-left one
                                                                                         # feel free to add/subtract to those arguments until it crops the tile correctly
-                                                                                        # After doing this, make sure the arugments are the same in vision/__init__ line 39
+                                                                                        # After doing this, make sure the arugments are the same in vision/__init__.py line 39
         cropped.save(f"training/{ts}-{i}.png")
 
 
