@@ -34,13 +34,29 @@ def validate_board(board):
         elements[el] += 1
 
     for el in Element.Cardinals:
+        print(el, " = ", elements[el])
         assert elements[el] == 8
     for el in Element.Metals:
+        print(el, " = ", elements[el])
         assert elements[el] == 1
+    print("Element.SALT", " = ", elements[Element.SALT])
     assert elements[Element.SALT] == 4
+    print("Element.QUICKSILVER", " = ", elements[Element.QUICKSILVER])
     assert elements[Element.QUICKSILVER] == 5
-    assert elements[Element.MORS] == 4
-    assert elements[Element.VITAE] == 4
+    print("Element.QUINTESSENCE", " = ", elements[Element.QUINTESSENCE])
+    if elements[Element.QUINTESSENCE] == 0:
+        print("This looks likes a board of sigmar's garden 1")
+        print("Element.MORS", " = ", elements[Element.MORS])
+        assert elements[Element.MORS] == 4
+        print("Element.VITAE", " = ", elements[Element.VITAE])
+        assert elements[Element.VITAE] == 4
+    else:
+        print("This looks likes a board of sigmar's garden 2, might take longer to solve")
+        assert elements[Element.QUINTESSENCE] == 2
+        print("Element.MORS", " = ", elements[Element.MORS])
+        assert elements[Element.MORS] == 3
+        print("Element.VITAE", " = ", elements[Element.VITAE])
+        assert elements[Element.VITAE] == 3
 
     print("Board looks legit!")
 
