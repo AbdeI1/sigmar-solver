@@ -36,7 +36,7 @@ def detect_board(image):
     grayscale = image.convert("L")
     for i, (h, el) in enumerate(board.tiles):
         poly = list(layout.polygon_corners(h))
-        cropped = grayscale.crop((poly[3].x+120, poly[3].y-30, poly[0].x+115, poly[0].y+8)) # make sure the arguments here match the arguments in vision/training line 40
+        cropped = grayscale.crop((poly[3].x+120, poly[3].y-30, poly[0].x+115, poly[0].y+8)) # make sure the arguments here match the arguments in vision/training.py line 40
         normalized = normalize_image(numpy.array(cropped))
         prediction, = model.predict_classes(flatten_image_array([normalized]))
         el = Element(prediction)
