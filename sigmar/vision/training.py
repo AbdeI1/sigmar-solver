@@ -37,7 +37,7 @@ def capture_tile_images():
     ts = int(time.time())
     for i, (h, el) in enumerate(board.tiles):
         poly = list(layout.polygon_corners(h))
-        cropped = image.crop((poly[3].x+120, poly[3].y-30, poly[0].x+115, poly[0].y+8)) # this line how the tile is cropped, 
+        cropped = image.crop((poly[3].x+120, poly[3].y-30, poly[0].x+115, poly[0].y+8)) # this line controls how the tile is cropped, 
                                                                                         # the first two arguments are the top-right corener, 
                                                                                         # the next two are the bottom-left one
                                                                                         # feel free to add/subtract to those arguments until it crops the tile correctly
