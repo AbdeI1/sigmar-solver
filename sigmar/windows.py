@@ -163,8 +163,8 @@ def click_in_window(client_x, client_y):
     set_window_foreground(handle)
     rect = get_window_rectangle(handle)
 
-    x = client_x + rect.left
-    y = client_y + rect.top
+    x = client_x + rect.left + 100
+    y = client_y + rect.top  - 10 
 
     pyautogui.mouseDown(button="left", x=x, y=y)
     time.sleep(0.1)

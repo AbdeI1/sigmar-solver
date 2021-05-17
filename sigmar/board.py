@@ -25,6 +25,8 @@ class Element(enum.IntEnum):
 
     QUICKSILVER = 14
 
+    QUINTESSENCE = 15
+
 
 Element.Cardinals = [
     Element.AIR,

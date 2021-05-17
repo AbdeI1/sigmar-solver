@@ -27,6 +27,22 @@ class RemovePair(Action):
         board.take(self.h2)
 
 
+class RemoveFive(Action):
+    def __init__(self, h1, h2, h3, h4, h5):
+        self.h1 = h1
+        self.h2 = h2
+        self.h3 = h3
+        self.h4 = h4
+        self.h5 = h5
+
+    def do(self, board):
+        board.take(self.h5)
+        board.take(self.h1)
+        board.take(self.h2)
+        board.take(self.h3)
+        board.take(self.h4)
+
+
 def find_metals(board, open_elements):
     live_metals = {e: h for h, e in board.tiles if e in Element.Metals}
     if not live_metals:
@@ -71,11 +87,24 @@ def match_cardinal_with_salt(board, open_elements):
             yield RemovePair(h1, h2)
 
 
+def match_cardinals_with_quintessence(board, open_elements):
+    quintessences = [(h, e) for h, e in open_elements.items() if e is Element.QUINTESSENCE]
+    if not quintessences:
+        return
+    cardinal_quadruplets = itertools.combinations(((h, e) for h, e in open_elements.items() if e in Element.Cardinals), 4)
+    for (h5, e5) in quintessences:
+        for (h1, e1), (h2, e2), (h3, e3), (h4, e4) in cardinal_quadruplets:
+            if e1 is Element.AIR and e2 is Element.FIRE and e3 is Element.WATER and e4 is Element.EARTH:
+                yield RemoveFive(h1, h2, h3, h4, h5)
+        
+
+
 ACTION_FACTORIES = [
     find_metals,
     match_mors_vitae,
     match_pairs,
     match_cardinal_with_salt,
+    match_cardinals_with_quintessence,
 ]
 
 
