@@ -47,12 +47,10 @@ def find_metals(board, open_elements):
     live_metals = {e: h for h, e in board.tiles if e in Element.Metals}
     if not live_metals:
         return
-
     lowest_metal = sorted(live_metals.keys())[0]
     lowest_metal_hex = live_metals[lowest_metal]
     if lowest_metal_hex not in open_elements:
         return
-
     if lowest_metal is Element.GOLD:
         yield RemoveSingle(lowest_metal_hex)
     else:
@@ -74,7 +72,6 @@ def match_pairs(board, open_elements):
     for (h1, e1), (h2, e2) in cardinal_pairs:
         if e1 == e2:
             yield RemovePair(h1, h2)
-
     salt_pairs = itertools.combinations((h for h, e in open_elements.items() if e is Element.SALT), 2)
     for h1, h2 in salt_pairs:
         yield RemovePair(h1, h2)
@@ -83,7 +80,7 @@ def match_pairs(board, open_elements):
 def match_cardinal_with_salt(board, open_elements):
     pairs = itertools.combinations(((h, e) for h, e in open_elements.items() if e in Element.Cardinals or e is Element.SALT), 2)
     for (h1, e1), (h2, e2) in pairs:
-        if e1 is not Element.SALT and e2 is Element.SALT:
+        if (e1 is not Element.SALT and e2 is Element.SALT) or (e1 is Element.SALT and e2 is not Element.SALT):
             yield RemovePair(h1, h2)
 
 
@@ -94,7 +91,9 @@ def match_cardinals_with_quintessence(board, open_elements):
     cardinal_quadruplets = itertools.combinations(((h, e) for h, e in open_elements.items() if e in Element.Cardinals), 4)
     for (h5, e5) in quintessences:
         for (h1, e1), (h2, e2), (h3, e3), (h4, e4) in cardinal_quadruplets:
-            if e1 is Element.AIR and e2 is Element.FIRE and e3 is Element.WATER and e4 is Element.EARTH:
+            temp = [e1, e2, e3, e4]
+            temp.sort()
+            if temp[0] is Element.AIR and temp[1] is Element.FIRE and temp[2] is Element.WATER and temp[3] is Element.EARTH:
                 yield RemoveFive(h1, h2, h3, h4, h5)
         
 
@@ -120,22 +119,17 @@ def _solve_game(board, seen_states):
     live_elements = [(h, e) for h, e in board.tiles if e is not None]
     if not live_elements:
         return []
-
     open_elements = {h: e for h, e in live_elements if board.is_open(h)}
     if not open_elements:
         raise UnsolveableBoardError
-
     for action_factory in ACTION_FACTORIES:
         for action in action_factory(board, open_elements):
             new_board = board.clone()
             action.do(new_board)
-
             if hash(new_board) in seen_states:
                 continue
-
             try:
                 return [action] + _solve_game(new_board, seen_states)
             except UnsolveableBoardError:
                 seen_states.add(hash(new_board))
-
     raise UnsolveableBoardError
